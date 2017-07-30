@@ -876,6 +876,10 @@ func TestBeginTranError(t *testing.T) {
 	case driver.ErrBadConn:
 		t.Error("processBeginResponse should fail with error different from ErrBadConn but it did")
 	}
+
+	if conn.connectionGood {
+		t.Fatal("Connection should be in a bad state")
+	}
 }
 
 func TestCommitTranError(t *testing.T) {
@@ -914,6 +918,10 @@ func TestCommitTranError(t *testing.T) {
 		t.Error("simpleProcessResp should fail but it succeeded")
 	case driver.ErrBadConn:
 		t.Error("simpleProcessResp should fail with error different from ErrBadConn but it did")
+	}
+
+	if conn.connectionGood {
+		t.Fatal("Connection should be in a bad state")
 	}
 
 	// reopen connection
@@ -968,6 +976,10 @@ func TestRollbackTranError(t *testing.T) {
 		t.Error("simpleProcessResp should fail but it succeeded")
 	case driver.ErrBadConn:
 		t.Error("simpleProcessResp should fail with error different from ErrBadConn but it did")
+	}
+
+	if conn.connectionGood {
+		t.Fatal("Connection should be in a bad state")
 	}
 
 	// reopen connection
@@ -1050,6 +1062,10 @@ func TestProcessQueryErrors(t *testing.T) {
 	// should not fail with ErrBadConn because query was successfully sent to server
 	if err == driver.ErrBadConn {
 		t.Error("processQueryResponse expected to fail with error other than ErrBadConn but it failed with it")
+	}
+
+	if conn.connectionGood {
+		t.Fatal("Connection should be in a bad state")
 	}
 }
 
